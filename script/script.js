@@ -1,9 +1,17 @@
-let money;
-let income;
-let addExpenses;
-let deposit;
-let mission;
-let period;
+let money = 42000;
+let income = '10000';
+let addExpenses = '600, 200, 6000';
+let deposit = true;
+let mission = 600000;
+let period = 7;
+let budgetDay = money / 30;
 
-alert('lesson 1');
-console.log('finish');
+console.log(typeof money);
+console.log(typeof income);
+console.log(typeof deposit);
+console.log(addExpenses.length);
+console.log('Период равен', period, 'месяцев');
+console.log('Цель заработать', mission, 'рублей');
+console.log(addExpenses.toLowerCase());
+console.log(addExpenses.split(', '));
+console.log(budgetDay);
