@@ -1,13 +1,24 @@
 'use strict';
 
-const money = +prompt('Ваш месячный доход?');
+const isNumber = function(n) {
+    return !isNaN(parseFloat(n)) && isFinite(n);
+};
+
+
+let money;
+const start = function() {
+    do {
+        money = prompt('Ваш месячный доход');
+    } while (!isNumber(money));
+    
+};
+
+start();
+
 const income = '10000';
 const addExpenses = prompt('Перечислите возможные расходы за рассчитываемый период через запятую');
 const deposit = confirm('Есть ли у вас депозит в банке?');
-const expenses1 = prompt('Введите обязательную статью расходов');
-const amount1 = +prompt('Во сколько это обойдется?');
-const expenses2 = prompt('Введите обязательную статью расходов');
-const amount2 = +prompt('Во сколько это обойдется?');
+const expenses = [];
 const mission = 600000;
 const period = 7;
 
@@ -19,22 +30,42 @@ showTypeOf(money);
 showTypeOf(income);
 showTypeOf(deposit);
 
-const getExpensesMonth = function() {
-    return amount1 + amount2;
-};
-getExpensesMonth();
-
 console.log(addExpenses.toLowerCase().split(','));
 
+const getExpensesMonth = function() {
+    let sum = 0;
+    
+    for (let i = 0; i < 2; i++) {
+        let amount;
+        expenses[i] = prompt('Введите обязательную статью расходов');    
+        do {
+            amount = prompt('Во сколько это обойдется?');
+        } while (!isNumber(amount));
+        sum += amount;
+            
+        
+    }
+    console.log(expenses);
+    return sum;
+};
+
+const expensesAmount = getExpensesMonth();
+
 const getAccumulatedMonth = function() {
-    return money - getExpensesMonth();
+    return money - expensesAmount;
 };
 getAccumulatedMonth();
 
 const accumulatedMonth = getAccumulatedMonth();
 
 const getTargetMonth = function() {
-    return mission / accumulatedMonth;
+    const missionMonth = mission / accumulatedMonth;
+    if (missionMonth > 0) {
+        return 'Цель будет достигнута за : ' + missionMonth;
+    } else { 
+        return 'Цель не будет достигнута';
+    }
+
 };
 getTargetMonth();
 
@@ -54,7 +85,7 @@ const getStatusIncome = function() {
 getStatusIncome();
 
 
-console.log(getExpensesMonth());
+
 console.log(getAccumulatedMonth());
 console.log(budgetDay);
 console.log(getTargetMonth());
