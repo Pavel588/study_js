@@ -35,10 +35,10 @@ const appData = {
             for (let i = 0; i < 2; i++) {
                 let amount;
                 let topExpenses = prompt('Введите обязательную статью расходов');    
-                do {
-                    amount = prompt('Во сколько это обойдется?');
-                } while (!isNumber(amount));
-                appData.expenses[topExpenses] = amount;
+                    do {
+                        amount = prompt('Во сколько это обойдется?');
+                    } while (!isNumber(amount));
+                appData.expenses[topExpenses] = +amount;
             }
     },
     
@@ -58,11 +58,11 @@ const appData = {
     
     getTargetMonth() {
         const missionMonth = Math.ceil(appData.mission / appData.budgetMonth);
-    if (missionMonth > 0) {
-        return 'Цель будет достигнута за : ' + missionMonth + ' месяцa(-ев)';
-    } else { 
-        return 'Цель не будет достигнута';
-    }
+            if (missionMonth > 0) {
+                return 'Цель будет достигнута за : ' + missionMonth + ' месяцa(-ев)';
+            } else { 
+                return 'Цель не будет достигнута';
+        }
     },
 
     getStatusIncome() {
