@@ -8,7 +8,7 @@ const isNumber = function(n) {
 let money;
 const start = function() {
     do {
-        money = prompt('Ваш месячный доход');
+        money = prompt('Ваш месячный доход', 50000);
     } while (!isNumber(money));
     
 };
@@ -25,21 +25,44 @@ const appData = {
     expenses: {},
     addExpenses: [],
     deposit: false,
+    percentDeposit: 0,
+    moneyDeposit: 0,
     mission: 50000,
     period: 3,
     asking() {
-            const addExpenses = prompt('Перечислите возможные расходы за рассчитываемый период через запятую');
-            appData.addExpenses = addExpenses.toLowerCase().split(',');
-            appData.deposit = confirm('Есть ли у вас депозит в банке?');
-            
-            for (let i = 0; i < 2; i++) {
-                let amount;
-                let topExpenses = prompt('Введите обязательную статью расходов');    
-                    do {
-                        amount = prompt('Во сколько это обойдется?');
-                    } while (!isNumber(amount));
-                appData.expenses[topExpenses] = +amount;
+        
+        if(confirm('Есть ли у вас дополнительный источник заработка?')) {
+            let itemIncome = prompt('Какой у вас дополнительный заработок', 'Таксую');
+            while(isFinite(itemIncome) || itemIncome === null) {
+                itemIncome = prompt('Какой у вас дополнительный заработок', 'Таксую');
             }
+
+            let cashIncome = prompt('Сколько в месяц вы на этом зарабатываете?', 10000);
+            while(!isNumber(cashIncome)) {
+                cashIncome = prompt('Сколько в месяц вы на этом зарабатываете?', 10000);
+            }
+
+            appData.income[itemIncome] = +cashIncome;
+        }    
+
+        let addExpenses = prompt('Перечислите возможные расходы за рассчитываемый период через запятую', 'Квартплата, спортзал, хобби');
+        while(isFinite(addExpenses) || addExpenses === null) {
+            addExpenses = prompt('Перечислите возможные расходы за рассчитываемый период через запятую', 'Квартплата, спортзал, хобби');
+        }
+        appData.addExpenses = addExpenses.toLowerCase().split(',');
+        appData.deposit = confirm('Есть ли у вас депозит в банке?');
+            
+        for (let i = 0; i < 2; i++) {
+            let amount;
+            let topExpenses = prompt('Введите обязательную статью расходов');
+            while(isFinite(topExpenses) || topExpenses === null) {
+                topExpenses = prompt('Введите обязательную статью расходов');
+            }    
+                do {
+                    amount = prompt('Во сколько это обойдется?');
+                } while (!isNumber(amount));
+            appData.expenses[topExpenses] = +amount;
+        }
     },
     
     getExpensesMonth() {
@@ -76,6 +99,23 @@ const appData = {
             console.log('Что-то пошло не так');
         }
     },
+    
+    getInfoDeposit() {
+        if(appData.deposit) {
+            appData.percentDeposit = prompt('Какой годовой процент?', '10');
+            while(!isNumber(appData.percentDeposit)) {
+                appData.percentDeposit = prompt('Какой годовой процент?', '10');
+            }
+            appData.moneyDeposit = prompt('Какая сумма заложена?', 10000);
+            while(!isNumber(appData.moneyDeposit)) {
+                appData.moneyDeposit = prompt('Какой годовой процент?', '10');
+            }
+        }
+    },
+    
+    calcSavedMoney() {
+        return appData.budgetMonth * appData.period;
+    }
 };
 
 
@@ -83,7 +123,11 @@ const appData = {
 appData.asking();
 appData.getExpensesMonth();
 appData.getBudget();
+appData.getTargetMonth(); 
+appData.getInfoDeposit();
 appData.getStatusIncome();
+appData.calcSavedMoney();
+
 
 console.log(appData.budgetMonth);
 console.log(appData.getTargetMonth());
@@ -92,3 +136,11 @@ console.log('Наша программа включает в себя данны
 for (let key in appData) {
     console.log(key, ' - ', appData[key]);
 }
+
+
+let array = appData.addExpenses.join(', ');
+    console.log(array.split(/\s+/).map(word => word[0].toUpperCase() + word.substring(1)).join(' ')
+        );
+
+
+
