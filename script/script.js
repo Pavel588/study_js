@@ -1,5 +1,35 @@
 'use strict';
 
+const buttonCalculate = document.getElementById('start');
+
+const buttonIncomeAdd = document.getElementsByTagName('button')[0];
+const buttonExpensesAdd = document.getElementsByTagName('button')[1];
+
+const depositCheckbox = document.querySelector('#deposit-check');
+
+const incomeInputOne = document.querySelectorAll('.additional_income-item')[0];
+const iIncomeInputTwo = document.querySelectorAll('.additional_income-item')[1];
+
+const budgetDayValue = document.getElementsByClassName('budget_day-value')[0];
+const expensesMonthValue = document.getElementsByClassName('expenses_month-value')[0];
+const additionalIncomeValue = document.getElementsByClassName('additional_income-value')[0];
+const additionalExpensesValue = document.getElementsByClassName('additional_expenses-value')[0];
+const incomePeriodValue = document.getElementsByClassName('income_period-value')[0];
+const targetMonthValue = document.getElementsByClassName('target_month-value')[0];
+
+console.log(document.getElementsByClassName('target_month-value')[0]);
+
+const salaryAmountInput = document.querySelector('.salary-amount');
+const incomeTitleInput = document.querySelector('input.income-title[placeholder="Наименование"]');
+const incomeAmountInput = document.querySelector('input.income-amount[placeholder="Сумма"]');
+console.log(document.querySelector('.income-title'));
+const expensesTitleInput = document.querySelector('input.expenses-title[placeholder="Наименование"]');
+const expensesAmountInput = document.querySelector('input.expenses-amount[placeholder="Сумма"]');
+const additionalExpensesInput = document.querySelector('.additional_expenses-item');
+const targetAmountInput = document.querySelector('.target-amount');
+const periodRangeInput = document.querySelector('.period-select');
+
+
 const isNumber = function(n) {
     return !isNaN(parseFloat(n)) && isFinite(n);
 };
@@ -141,6 +171,8 @@ for (let key in appData) {
 let array = appData.addExpenses.join(', ');
     console.log(array.split(/\s+/).map(word => word[0].toUpperCase() + word.substring(1)).join(' ')
         );
+
+
 
 
 
