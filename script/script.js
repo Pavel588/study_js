@@ -258,7 +258,7 @@ changePercent(){
     } else {
         start.removeAttribute('disabled');
         depositPercent.value = valueSelect;
-        depositPercent.style.display = 'inline-block';
+        depositPercent.style.display = 'none';
         
     }
 }
