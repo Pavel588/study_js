@@ -56,6 +56,10 @@ class AppData {
     this.moneyDeposit = 0;
 }
 start() {
+    if(depositCheckbox.checked && (depositBank.value === '' || depositAmount.value === '' || !isFinite(depositAmount.value) || depositPercent.value === '') ) {
+        return;
+    } 
+    
     if(salaryAmountInput.value === ''){
         alert('Ошибка, поле "Месячный доход" должно быть заполнено!');
         return;
@@ -220,18 +224,6 @@ getTargetMonth() {
             return missionMonth;
 }
 
-getStatusIncome() {
-    if (this.budgetDay >= 1200) {
-        console.log('У вас высокий уровень дохода');
-    } else if (this.budgetDay >= 600 && this.budgetDay < 1200) {
-        console.log('У вас средний уровень дохода');
-    } else if (this.budgetDay >= 0 && this.budgetDay <= 600) {
-        console.log('К сожалению у вас уровень дохода ниже среднего');
-    } else if (this.budgetDay < 0) {
-        console.log('Что-то пошло не так');
-    }
-}
-
 getInfoDeposit() {
     if(this.deposit) {
         this.percentDeposit = depositPercent.value;
@@ -241,7 +233,7 @@ getInfoDeposit() {
 
 getPeriod() {
     periodAmount.textContent = periodSelect.value;
-    console.log(periodAmount);
+    
 }
 
 calcPeriod() {
@@ -275,7 +267,6 @@ depositHandler() {
     if (depositCheck.checked) {
         depositBank.style.display = 'inline-block';
         depositAmount.style.display = 'inline-block';
-        depositPercent.style.display = 'inline-block';
         this.deposit = true;
         depositBank.addEventListener('change', this.changePercent);
     } else {
