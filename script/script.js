@@ -81,7 +81,9 @@ blocked() {
     buttonExpensesAdd.setAttribute('disabled', 'true');    
     start.style.display = 'none';
     cancel.style.display = 'block';
-    
+    depositBank.setAttribute('disabled', 'true');
+    depositCheckbox.setAttribute('disabled', 'true');
+    depositPercent.removeEventListener('input', appData.validatorPercent);
 
 }
 reset() {
@@ -123,6 +125,9 @@ reset() {
     buttonIncomeAdd.removeAttribute('disabled');
     buttonExpensesAdd.removeAttribute('disabled');
     depositCheckbox.checked = false;
+    depositPercent.style.display = 'none';
+    depositBank.removeAttribute('disabled');
+    depositCheckbox.removeAttribute('disabled');
     this.depositHandler();
     
 }
@@ -257,12 +262,12 @@ changePercent(){
         depositPercent.style.display = 'inline-block';
         depositPercent.value = '';
         this.percentDeposit = depositPercent.value;
-        depositPercent.addEventListener('input', appData.validatorPercent);
+        
     } else {
         start.removeAttribute('disabled');
         depositPercent.value = valueSelect;
-        depositPercent.style.display = 'none';
-        depositPercent.removeEventListener('input', appData.validatorPercent);
+        depositPercent.style.display = 'inline-block';
+        
     }
 }
 
@@ -270,6 +275,7 @@ depositHandler() {
     if (depositCheck.checked) {
         depositBank.style.display = 'inline-block';
         depositAmount.style.display = 'inline-block';
+        depositPercent.style.display = 'inline-block';
         this.deposit = true;
         depositBank.addEventListener('change', this.changePercent);
     } else {
@@ -307,6 +313,7 @@ eventListeners() {
 
     });
     depositCheck.addEventListener('change', this.depositHandler.bind(this));
+    depositPercent.addEventListener('input', appData.validatorPercent);
 }
 }
 
