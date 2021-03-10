@@ -320,9 +320,7 @@ window.addEventListener('DOMContentLoaded', function(){
 
                 }
                 item.value = arr.join(' ');
-                console.log(item.value);
                 item.value = item.value.replace(/^[\-]*$/g, '');
-                console.log(item.value);
             });
         });
 
@@ -357,6 +355,8 @@ window.addEventListener('DOMContentLoaded', function(){
     };
 
     formValidation();
+
+
 
 
 
