@@ -43,10 +43,11 @@ window.addEventListener('DOMContentLoaded', function(){
                 clearInterval(interval);
             }
         };
+        updateClock();
         const interval = setInterval(updateClock, 1000);
     };
-
-    countTimer('08 marth 2021')
+    
+    countTimer('14 marth 2021')
     
 
     // Меню
@@ -286,70 +287,44 @@ window.addEventListener('DOMContentLoaded', function(){
         const calcItems = document.querySelectorAll('.calc-item'),
             inputName = document.querySelectorAll('input[placeholder="Ваше имя"]'),
             inputEmail = document.querySelectorAll('input[type="email"]'),
-            inputPhone = document.querySelectorAll('input[placeholder="Номер телефона"]'),
-            inputMessage = document.querySelector('input[placeholder="Ваше сообщение"]'),
-            regText = /[^а-яё\s{1}\-]*/gi,
-            regEmail = /[^a-z\!\-\_\.\~\*\'@]+$/gi;
+            inputPhone = document.querySelectorAll('.form-phone'),
+            inputMessage = document.querySelector('.mess');
+            
 
-        for (let i = 1; i < calcItems.length; i++) {
-        calcItems[i].addEventListener('blur', () => {
-            calcItems[i].value = calcItems[i].value.replace(/\D/g, '');
+        calcItems.forEach((item, index) => {
+            item.addEventListener('input', () => {
+                if (index === 0) {
+                    return;
+                }
+                item.value = item.value.replace(/[^\d]/g, '');
+            });
         });
-        }
 
         inputName.forEach(item => {
-
-            item.addEventListener('blur', () => {
-
-                item.value = item.value.replace(regText, '');
-                item.value = item.value.replace(/\s\s+/g, ' ');
-                item.value = item.value.replace(/\-\-+/g, '-').trim();
-                item.value = item.value.replace(/^[^а-яё\-]+\s[^а-яё\-]+$/gi, '').trim();
-                if (item.value[0] === '-') {
-                    item.value = item.value.slice(1);
-                } else if (item.value[item.value.length - 1] === '-') {
-                    item.value = item.value.slice(0, -1);
-                }
-            const arr = item.value.split(' ');
-            for (let i = 0; i < arr.length; i++) {
-
-                if (arr[i]) {
-
-                    arr[i] = arr[i][0].toUpperCase() + arr[i].substr(1).toLowerCase();
-                }
-
-                }
-                item.value = arr.join(' ');
-                item.value = item.value.replace(/^[\-]*$/g, '');
+            item.addEventListener('input', () => {
+                item.value = item.value.replace(/[^а-я\s]/gi, '').replace(/\s+/g, " ");
             });
         });
 
       
-        inputMessage.addEventListener('blur', () => {
+        inputMessage.addEventListener('input', () => {
 
-            inputMessage.value = inputMessage.value.replace(regText, '').trim();
-            inputMessage.value = inputMessage.value.replace(/\s\s+/g, ' ');
-            inputMessage.value = inputMessage.value.replace(/\-\-+/g, '-').trim();
-            inputMessage.value = inputMessage.value.replace(/[^а-яё\-\,\ \.]*/ig, '').trim();
-
+            inputMessage.value = inputMessage.value.replace(/[^-а-я\s0-9.,?!]/gi, '').replace(/-+/g, '-');
         });
           
         inputEmail.forEach(item => {
 
-            item.addEventListener('blur', () => {
-
-                item.value = item.value.replace(regEmail, '');
-                item.value = item.value.replace(/\s\s+/g, ' ');
-                item.value = item.value.replace(/\-\-+/g, '-').trim();
+            item.addEventListener('input', () => {
+                item.value = item.value.replace(/[^a-z@\-_.!~*']/gi, '').replace(/-+/g, '-').replace(/^-|-$/g, ' ');
             });
         });
       
         inputPhone.forEach(item => {
-            item.addEventListener('blur', () => {
-                item.value = item.value.replace(/^[^0-9()\-]*$/g, '');
-                item.value = item.value.replace(/\s\s+/g, ' ');
-                item.value = item.value.replace(/\-\-+/g, '-').trim();
-                item.value = item.value.replace(/^[\-]+$/g, '');
+            item.addEventListener('input', () => {
+                item.value = item.value.replace(/[^+\d-()]/g, '').replace(/-+/g, '-').replace(/^-|-$/g, ' ');
+                if (item.value.length > 16) {
+                    item.value = item.value.slice(0, 15);
+                }
             });
         });
     };
@@ -434,6 +409,104 @@ window.addEventListener('DOMContentLoaded', function(){
 
     calc(100);
 
+    // send ajax form
 
+    const sendForm = () => {
+        const errorMessage = 'Что-то пошло не так...',
+            loadMessage = 'Загрузка...',
+            successMesage = 'Спасибо! Мы скоро с вами свяжемся!';
+        
+        const form = document.getElementById('form1'),
+            formModal = document.getElementById('form3'),
+            formContact = document.getElementById('form2');
+        
+        const statusMesage = document.createElement('div');
+        statusMesage.style.cssText = 'font-size 2rem;';
+
+        form.addEventListener('submit', (event) => {
+            event.preventDefault();
+            form.appendChild(statusMesage);
+            statusMesage.textContent = loadMessage;
+            const formData = new FormData(form);
+            let body = {};
+            formData.forEach((val, key) => {
+                body[key] = val;
+            });
+            postData(body, () => {
+                statusMesage.textContent = successMesage;
+            }, (error) => {
+                statusMesage.textContent = errorMessage;
+                console.log(error);
+            });
+            form.querySelectorAll('input').forEach((item) => {
+                item.value = '';
+            });
+
+        });
+
+        formModal.addEventListener('submit', (event) => {
+            event.preventDefault();
+            form.appendChild(statusMesage);
+            statusMesage.textContent = loadMessage;
+            const formData = new FormData(formModal);
+            let body = {};
+            formData.forEach((val, key) => {
+                body[key] = val;
+            });
+            postData(body, () => {
+                statusMesage.textContent = successMesage;
+            }, (error) => {
+                statusMesage.textContent = errorMessage;
+                console.log(error);
+            });
+            formModal.querySelectorAll('input').forEach((item) => {
+                item.value = '';
+            });
+
+        });
+
+        formContact.addEventListener('submit', (event) => {
+            event.preventDefault();
+            form.appendChild(statusMesage);
+            statusMesage.textContent = loadMessage;
+            const formData = new FormData(formContact);
+            let body = {};
+            formData.forEach((val, key) => {
+                body[key] = val;
+            });
+            postData(body, () => {
+                statusMesage.textContent = successMesage;
+            }, (error) => {
+                statusMesage.textContent = errorMessage;
+                console.log(error);
+            });
+            formContact.querySelectorAll('input').forEach((item) => {
+                item.value = '';
+            });
+
+        });
+
+        const postData = (body, outputData, errorData) => {
+            const request = new XMLHttpRequest();
+            request.addEventListener('readystatechange', () => {
+                if(request.readyState !== 4) {
+                    return;
+                }
+    
+                if(request.status === 200) {
+                    outputData();
+                } else {
+                    errorData(request.status);
+                }
+            }); 
+
+            request.open('POST', './server.php');
+            request.setRequestHeader('Content-Type', 'application/json');
+            
+            request.send(JSON.stringify(body));
+        };
+        
+    };
+    sendForm();
 
 });
