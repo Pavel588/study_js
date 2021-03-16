@@ -414,53 +414,45 @@ window.addEventListener('DOMContentLoaded', function(){
     const sendForm = () => {
         const errorMessage = 'Что-то пошло не так...',
             loadMessage = 'Загрузка...',
-            successMesage = 'Спасибо! Мы скоро с вами свяжемся!';
+            successMessage = 'Спасибо! Мы скоро с вами свяжемся!';
         
         const form = document.getElementById('form1'),
             formModal = document.getElementById('form3'),
             formContact = document.getElementById('form2');
         
-        const statusMesage = document.createElement('div');
-        statusMesage.style.cssText = 'font-size 2rem;';
+        const statusMessage = document.createElement('div');
+        statusMessage.style.cssText = 'font-size 2rem;';
 
-        const postData = body => new Promise((resolve, reject) => {
-            const request = new XMLHttpRequest();
-            request.addEventListener("readystatechange", () => {
-                if (request.readyState !== 4) {
-                    return;
-                }
-                if (request.status === 200) {
-                    resolve('Спасибо! Мы скоро с Вами свяжемся.');
-                } else {
-                    reject('Что-то пошло не так...');
-                }
-            });
-
-            request.open('POST', './server.php');
-            request.setRequestHeader('Content-Type', 'application/json');
-            request.send(JSON.stringify(body));
+        const postData = (body) => fetch('./server.php', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(body),
         });
 
         form.addEventListener('submit', (event) => {
             event.preventDefault();
-            form.appendChild(statusMesage);
-            statusMesage.textContent = loadMessage;
+            form.appendChild(statusMessage);
+            statusMessage.textContent = loadMessage;
             const formData = new FormData(form);
             let body = {};
             formData.forEach((val, key) => {
                 body[key] = val;
             });
             postData(body)
-                .then(successMessage => {
-                    statusMesage.textContent = successMessage;
+                .then((response) => {
+                    if (response.status !== 200) {
+                        throw new Error('network failed');
+                    }
+                    statusMessage.textContent = successMessage;
                     setTimeout(() => {
-                        statusMesage.textContent = '';
+                        statusMessage.textContent = '';
                     }, 5000);
                 })
-                .catch(errorMessage => {
-                    statusMesage.textContent = errorMessage;
+                .catch((error) => {
+                    statusMessage.textContent = errorMessage;
+                    console.log(error);
                     setTimeout(() => {
-                        statusMesage.textContent = '';
+                        statusMessage.textContent = '';
                     }, 5000);
                 });
             form.querySelectorAll('input').forEach((item) => {
@@ -471,24 +463,31 @@ window.addEventListener('DOMContentLoaded', function(){
 
         formModal.addEventListener('submit', (event) => {
             event.preventDefault();
-            form.appendChild(statusMesage);
-            statusMesage.textContent = loadMessage;
+            formModal.appendChild(statusMessage);
+            statusMessage.style.color = 'white';
+            statusMessage.textContent = loadMessage;
             const formData = new FormData(formModal);
             let body = {};
             formData.forEach((val, key) => {
                 body[key] = val;
             });
             postData(body)
-                .then(successMessage => {
-                    statusMesage.textContent = successMessage;
-                    setTimeout(() => {
-                        statusMesage.textContent = '';
-                    }, 5000);
+            .then((response) => {
+                if (response.status !== 200) {
+                    throw new Error('network failed');
+                }
+                statusMessage.style.color = 'white';
+                statusMessage.textContent = successMessage;
+                setTimeout(() => {
+                    statusMessage.textContent = '';
+                }, 5000);
                 })
-                .catch(errorMessage => {
-                    statusMesage.textContent = errorMessage;
+                .catch((error) => {
+                    statusMessage.style.color = 'white';
+                    statusMessage.textContent = errorMessage;
+                    console.log(error);
                     setTimeout(() => {
-                        statusMesage.textContent = '';
+                        statusMessage.textContent = '';
                     }, 5000);
                 });
 
@@ -496,24 +495,28 @@ window.addEventListener('DOMContentLoaded', function(){
 
         formContact.addEventListener('submit', (event) => {
             event.preventDefault();
-            form.appendChild(statusMesage);
-            statusMesage.textContent = loadMessage;
+            formContact.appendChild(statusMessage);
+            statusMessage.textContent = loadMessage;
             const formData = new FormData(formContact);
             let body = {};
             formData.forEach((val, key) => {
                 body[key] = val;
             });
             postData(body)
-                .then(successMessage => {
-                    statusMesage.textContent = successMessage;
-                    setTimeout(() => {
-                        statusMesage.textContent = '';
-                    }, 5000);
+            .then((response) => {
+                if (response.status !== 200) {
+                    throw new Error('network failed');
+                }
+                statusMessage.textContent = successMessage;
+                setTimeout(() => {
+                    statusMessage.textContent = '';
+                }, 5000);
                 })
-                .catch(errorMessage => {
-                    statusMesage.textContent = errorMessage;
+                .catch((error) => {
+                    statusMessage.textContent = errorMessage;
+                    console.log(error);
                     setTimeout(() => {
-                        statusMesage.textContent = '';
+                        statusMessage.textContent = '';
                     }, 5000);
                 });
             formContact.querySelectorAll('input').forEach((item) => {
