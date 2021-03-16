@@ -423,6 +423,24 @@ window.addEventListener('DOMContentLoaded', function(){
         const statusMesage = document.createElement('div');
         statusMesage.style.cssText = 'font-size 2rem;';
 
+        const postData = body => new Promise((resolve, reject) => {
+            const request = new XMLHttpRequest();
+            request.addEventListener("readystatechange", () => {
+                if (request.readyState !== 4) {
+                    return;
+                }
+                if (request.status === 200) {
+                    resolve('Спасибо! Мы скоро с Вами свяжемся.');
+                } else {
+                    reject('Что-то пошло не так...');
+                }
+            });
+
+            request.open('POST', './server.php');
+            request.setRequestHeader('Content-Type', 'application/json');
+            request.send(JSON.stringify(body));
+        });
+
         form.addEventListener('submit', (event) => {
             event.preventDefault();
             form.appendChild(statusMesage);
@@ -432,12 +450,19 @@ window.addEventListener('DOMContentLoaded', function(){
             formData.forEach((val, key) => {
                 body[key] = val;
             });
-            postData(body, () => {
-                statusMesage.textContent = successMesage;
-            }, (error) => {
-                statusMesage.textContent = errorMessage;
-                console.log(error);
-            });
+            postData(body)
+                .then(successMessage => {
+                    statusMesage.textContent = successMessage;
+                    setTimeout(() => {
+                        statusMesage.textContent = '';
+                    }, 5000);
+                })
+                .catch(errorMessage => {
+                    statusMesage.textContent = errorMessage;
+                    setTimeout(() => {
+                        statusMesage.textContent = '';
+                    }, 5000);
+                });
             form.querySelectorAll('input').forEach((item) => {
                 item.value = '';
             });
@@ -453,15 +478,19 @@ window.addEventListener('DOMContentLoaded', function(){
             formData.forEach((val, key) => {
                 body[key] = val;
             });
-            postData(body, () => {
-                statusMesage.textContent = successMesage;
-            }, (error) => {
-                statusMesage.textContent = errorMessage;
-                console.log(error);
-            });
-            formModal.querySelectorAll('input').forEach((item) => {
-                item.value = '';
-            });
+            postData(body)
+                .then(successMessage => {
+                    statusMesage.textContent = successMessage;
+                    setTimeout(() => {
+                        statusMesage.textContent = '';
+                    }, 5000);
+                })
+                .catch(errorMessage => {
+                    statusMesage.textContent = errorMessage;
+                    setTimeout(() => {
+                        statusMesage.textContent = '';
+                    }, 5000);
+                });
 
         });
 
@@ -474,38 +503,25 @@ window.addEventListener('DOMContentLoaded', function(){
             formData.forEach((val, key) => {
                 body[key] = val;
             });
-            postData(body, () => {
-                statusMesage.textContent = successMesage;
-            }, (error) => {
-                statusMesage.textContent = errorMessage;
-                console.log(error);
-            });
+            postData(body)
+                .then(successMessage => {
+                    statusMesage.textContent = successMessage;
+                    setTimeout(() => {
+                        statusMesage.textContent = '';
+                    }, 5000);
+                })
+                .catch(errorMessage => {
+                    statusMesage.textContent = errorMessage;
+                    setTimeout(() => {
+                        statusMesage.textContent = '';
+                    }, 5000);
+                });
             formContact.querySelectorAll('input').forEach((item) => {
                 item.value = '';
             });
 
         });
 
-        const postData = (body, outputData, errorData) => {
-            const request = new XMLHttpRequest();
-            request.addEventListener('readystatechange', () => {
-                if(request.readyState !== 4) {
-                    return;
-                }
-    
-                if(request.status === 200) {
-                    outputData();
-                } else {
-                    errorData(request.status);
-                }
-            }); 
-
-            request.open('POST', './server.php');
-            request.setRequestHeader('Content-Type', 'application/json');
-            
-            request.send(JSON.stringify(body));
-        };
-        
     };
     sendForm();
 
