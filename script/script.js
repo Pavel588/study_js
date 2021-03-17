@@ -423,10 +423,7 @@ window.addEventListener('DOMContentLoaded', function(){
             loadMessage = 'Загрузка...',
             successMessage = 'Спасибо! Мы скоро с вами свяжемся!';
         
-        const form = document.getElementById('form1'),
-            formModal = document.getElementById('form3'),
-            formContact = document.getElementById('form2'),
-            forms = document.querySelectorAll('form');
+        const forms = document.querySelectorAll('form');
 
         
         const statusMessage = document.createElement('div');
