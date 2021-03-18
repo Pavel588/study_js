@@ -2,6 +2,12 @@ const tabs = () => {
     const tabHeader = document.querySelector('.service-header'),
         tab = tabHeader.querySelectorAll('.service-header-tab'),
         tabContent = document.querySelectorAll('.service-tab');
+    
+    tabContent.forEach((tabItem, index) => {
+        if (index !== 0) {
+            tabItem.classList.add('d-none');
+        }
+    });    
 
     const toggleTabContent = (index) => {
 
