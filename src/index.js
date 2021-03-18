@@ -2,6 +2,7 @@
 import countTimer from './modules/countTimer';
 import toggleMenu from './modules/toggleMenu';
 import togglePopUp from './modules/togglePopUp'; 
+import smoothScroll from './modules/smoothScroll';
 import tabs from './modules/tabs'; 
 import slider from './modules/slider'; 
 import replacePhoto from './modules/replacePhoto'; 
@@ -15,6 +16,8 @@ countTimer('18 marth 2021')
 toggleMenu();
 //popup
 togglePopUp();
+//Плавный скролл
+smoothScroll();
 //ТАбы
 tabs();
 //Слайдер

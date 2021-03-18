@@ -4,6 +4,7 @@ const tabs = () => {
         tabContent = document.querySelectorAll('.service-tab');
 
     const toggleTabContent = (index) => {
+
         for(let i = 0; i < tabContent.length; i++){
             if(index === i){
                 tab[i].classList.add('active');
@@ -18,7 +19,6 @@ const tabs = () => {
         tabHeader.addEventListener('click', (event) => {
             let target = event.target;
                 target = target.closest('.service-header-tab');
-           
             if(target){
                 tab.forEach((item, i) => {
                     if(item === target){

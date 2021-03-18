@@ -17,7 +17,7 @@ const togglePopUp = () => {
                         clearInterval(timer);
                     }
                 };
-                const timer = setInterval(popupFadeIn, 7);
+                const timer = setInterval(popupFadeIn, 1);
             } else {
                 popup.style.display = "block";
             }
