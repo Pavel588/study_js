@@ -32,8 +32,11 @@ const countTimer = (deadline) => {
         timerMinutes.textContent = addZero(timer.minutes);
         timerSeconds.textContent = addZero(timer.seconds);
         } else if (timer.timeRemaining < 0 ) {
+            timerHours.style.color = 'red';
             timerHours.textContent = '00';
+            timerMinutes.style.color = 'red';
             timerMinutes.textContent = '00';
+            timerSeconds.style.color = 'red';
             timerSeconds.textContent = '00';
         } else {
             clearInterval(interval);

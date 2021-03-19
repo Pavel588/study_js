@@ -12,6 +12,6 @@ const toggleMenu = () => {
         if(target.classList.contains('close-btn') || target.closest('.menu') || target.matches('menu>ul>li>a')){
             handlerMenu();
         } 
-    })
+    });
 };
 export default toggleMenu;
