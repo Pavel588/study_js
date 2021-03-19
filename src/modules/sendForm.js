@@ -21,7 +21,6 @@ const sendForm = () => {
             event.preventDefault();
             form.appendChild(statusMessage);
             statusMessage.style.color = 'white';
-            statusMessage.textContent = loadMessage;
             const formElem = [...target.elements].filter(item => item.tagName.toLowerCase() !== 'button');
             const formData = new FormData(target);
             let body = {};
@@ -29,6 +28,7 @@ const sendForm = () => {
                 body[key] = val;
             });
             if (formElem[0].value !== '' && formElem[1].value !== '' &&  formElem[2].value !== '') {
+                statusMessage.textContent = loadMessage;
                 postData(body)
                 .then((response) => {
                     if (response.status !== 200) {
