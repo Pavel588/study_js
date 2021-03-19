@@ -27,6 +27,7 @@ const sendForm = () => {
             formData.forEach((val, key) => {
                 body[key] = val;
             });
+            
             if (formElem[0].value !== '' && formElem[1].value !== '' &&  formElem[2].value !== '') {
                 statusMessage.textContent = loadMessage;
                 postData(body)
