@@ -7,16 +7,14 @@ const formValidation = () => {
         }
         if (target.matches('.form-phone')){
             target.value = target.value.replace(/[^+\d]/g, '');
+            
             if (target.value.length > 12) {
                 target.value = target.value.slice(0, 13);
             } 
         }
         if (target.matches('.form-email')){
             target.value = target.value.replace(/[^a-z0-9@\-_.!~*']/gi, '').replace(/-+/g, '-');
-        } else {
-            alert('Введите корректный адрес электронной почты "asd@qwer.ru"');
-            target.value = '';
-        }
+        } 
         if (target.matches('.mess')){
             target.value = target.value.replace(/[^-а-яё\s0-9.,?!;"]/gi, '').replace(/-+/g, '-').replace(/\s+/g, ' ');
         }
@@ -29,6 +27,9 @@ const formValidation = () => {
         const target = event.target;
 
         if (target.matches('input[name="user_name"]')){
+            if (target.value.trim().length < 2) {
+                alert('Имя не может состоять из одной буквы');
+            } 
             if (target.value.trim() !== '') {
                 let temp = target.value.split(/\s+/);
                 if (temp.length) {
@@ -45,6 +46,11 @@ const formValidation = () => {
         }
         if (target.matches('.form-email')){
             target.value = target.value.replace(/^-/g, '').replace(/-$/g, '');
+        } 
+        if (target.matches('.form-phone')){
+            if (target.value.length < 7) {
+                alert('Укажите телефон в формате +7(___)___-____');
+            }
         }
         if (target.matches('.mess')){
             target.value = target.value.trim().replace(/^-/g, '').replace(/-$/g, '');
