@@ -1,52 +1,53 @@
 const formValidation = () => {
-    const calcItems = document.querySelectorAll('.calc-item'),
-        inputName = document.querySelectorAll('input[name="user_name"]'),
-        inputEmail = document.querySelectorAll('.form-email'),
-        inputPhone = document.querySelectorAll('.form-phone'),
-        inputMessage = document.querySelector('.mess');
-        
+    document.addEventListener('input', (event) => {
+        const target = event.target;
 
-    calcItems.forEach((item, index) => {
-        item.addEventListener('input', () => {
-            if (index === 0) {
-                return;
-            }
-            item.value = item.value.replace(/[^\d]/g, '');
-        });
-    });
-
-    inputName.forEach(item => {
-        item.addEventListener('input', () => {
-            item.value = item.value.replace(/[^а-я\s]/gi, '').replace(/\s+/g, " ");
-        });
-    });
-
-  
-    inputMessage.addEventListener('input', () => {
-
-        inputMessage.value = inputMessage.value.replace(/[^-а-я\s0-9.,?!]/gi, '').replace(/-+/g, '-');
-    });
-      
-    inputEmail.forEach((item) => {
-
-        item.addEventListener('input', () => {
-            item.value = item.value.replace(/[^a-z@\-_.!~*']/gi, '').replace(/-+/g, '-').replace(/^-|-$/g, ' ');
-        });
-    });
-  
-    inputPhone.forEach((item) => {
-        item.addEventListener('input', () => {
-            item.value = item.value.replace(/[^+\d-()]/g, '').replace(/-+/g, '-').replace(/^-|-$/g, ' ');
-            if (item.value.length > 16) {
-                item.value = item.value.slice(0, 15);
-            }
-        });
+        if(target.matches('.calc-item')){
+            target.value = target.value.replace(/[^\d]/g, '');
+        }
+        if (target.matches('.form-phone')){
+            target.value = target.value.replace(/[^+\d]/g, '');
+            if (target.value.length > 12) {
+                target.value = target.value.slice(0, 13);
+            } 
+        }
+        if (target.matches('.form-email')){
+            target.value = target.value.replace(/[^a-z0-9@\-_.!~*']/gi, '').replace(/-+/g, '-');
+        } else {
+            alert('Введите корректный адрес электронной почты "asd@qwer.ru"');
+            target.value = '';
+        }
+        if (target.matches('.mess')){
+            target.value = target.value.replace(/[^-а-яё\s0-9.,?!;"]/gi, '').replace(/-+/g, '-').replace(/\s+/g, ' ');
+        }
+        if (target.matches('input[name="user_name"]')){
+            target.value = target.value.replace(/[^а-яё\s]/gi, '').replace(/\s+/g, ' ').replace(/^\s/g, '');
+        } 
     });
 
     document.addEventListener('blur', (event) => {
         const target = event.target;
+
+        if (target.matches('input[name="user_name"]')){
+            if (target.value.trim() !== '') {
+                let temp = target.value.split(/\s+/);
+                if (temp.length) {
+                    let output = temp.map((item) => {
+                        if (item != '') {
+
+                            item = item[0].toUpperCase() + item.slice(1).toLowerCase();
+                            return item;
+                        }
+                    });
+                    target.value = output.join(' ').replace(/\s$/g, '');
+                }
+            }
+        }
         if (target.matches('.form-email')){
             target.value = target.value.replace(/^-/g, '').replace(/-$/g, '');
+        }
+        if (target.matches('.mess')){
+            target.value = target.value.trim().replace(/^-/g, '').replace(/-$/g, '');
         }
     }, true);   
 };
